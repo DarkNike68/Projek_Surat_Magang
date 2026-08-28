@@ -57,21 +57,6 @@
                     Manajemen Arsip
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a href="{{ route('admin.categories.index') }}" class="nav-link text-white {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                    <i class="fas fa-folder-open me-2"></i> Kategori Dokumen
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.permissions.index') }}" class="nav-link text-white {{ request()->routeIs('admin.permissions.*') ? 'active' : '' }}">
-                    <i class="fas fa-user-shield me-2"></i> Manajemen Izin Akses
-                </a>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a href="{{ route('admin.users.index') }}" class="nav-link text-white {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                    <i class="fas fa-users-cog me-2"></i> Manajemen User
-                </a>
-            </li> -->
             @endcan
             
             <li>

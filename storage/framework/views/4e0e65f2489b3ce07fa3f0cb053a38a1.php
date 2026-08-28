@@ -57,21 +57,6 @@
                     Manajemen Arsip
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a href="<?php echo e(route('admin.categories.index')); ?>" class="nav-link text-white <?php echo e(request()->routeIs('admin.categories.*') ? 'active' : ''); ?>">
-                    <i class="fas fa-folder-open me-2"></i> Kategori Dokumen
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="<?php echo e(route('admin.permissions.index')); ?>" class="nav-link text-white <?php echo e(request()->routeIs('admin.permissions.*') ? 'active' : ''); ?>">
-                    <i class="fas fa-user-shield me-2"></i> Manajemen Izin Akses
-                </a>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a href="<?php echo e(route('admin.users.index')); ?>" class="nav-link text-white <?php echo e(request()->routeIs('admin.users.*') ? 'active' : ''); ?>">
-                    <i class="fas fa-users-cog me-2"></i> Manajemen User
-                </a>
-            </li> -->
             <?php endif; ?>
             
             <li>

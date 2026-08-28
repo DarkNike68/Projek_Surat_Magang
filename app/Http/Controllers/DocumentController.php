@@ -32,7 +32,7 @@ class DocumentController extends Controller
                 'file_path' => $path,
                 'file_name' => $originalName,
                 'category_id' => $category->id,
-                'user_id' => Auth::id(), // Baris ini sekarang akan berfungsi
+                'user_id' => Auth::id(),
             ]);
         }
 
