@@ -106,7 +106,7 @@
                                 @endif
 
                                 @if ($surat->file_path)
-                                    <a href="{{ asset('storage/' . $surat->file_path) }}" target="_blank" class="d-block text-success small text-center">
+                                    <a href="{{ route('dashboard.surat.lihatFile', $surat->id) }}" target="_blank" class="d-block text-success small text-center">
                                         <i class="fas fa-check-circle"></i> Lihat File
                                     </a>
                                 @endif

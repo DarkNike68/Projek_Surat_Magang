@@ -106,7 +106,7 @@
                                 <?php endif; ?>
 
                                 <?php if($surat->file_path): ?>
-                                    <a href="<?php echo e(asset('storage/' . $surat->file_path)); ?>" target="_blank" class="d-block text-success small text-center">
+                                    <a href="<?php echo e(route('dashboard.surat.lihatFile', $surat->id)); ?>" target="_blank" class="d-block text-success small text-center">
                                         <i class="fas fa-check-circle"></i> Lihat File
                                     </a>
                                 <?php endif; ?>

@@ -240,7 +240,7 @@ class BuatSuratController extends Controller
             $nomorUrut = Surat::where('letter_code_jabatan_id', $jabatanId)
                                 ->where('letter_code_jenis_surat_id', $jenisId)
                                 ->where('tahun', $tahun)
-                                ->count() + 1; // Cukup hitung, tidak perlu lock
+                                ->count() + 1;
 
             // Format nomor surat (contoh format berbeda, sesuaikan jika perlu)
             $nomorSuratLengkap = sprintf(

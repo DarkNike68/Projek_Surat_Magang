@@ -58,7 +58,7 @@ class DashboardController extends Controller
 
         // Simpan file ke storage/app/public/surat-files. 
         // Nama file akan di-generate otomatis oleh Laravel untuk menghindari konflik.
-        $path = $request->file('file_surat')->store('surat-files', 'public');
+        $path = $request->file('file_surat')->store('surat-files');
 
         // Update record surat: simpan path file dan ubah status menjadi 'Menunggu Persetujuan'.
         $surat->update([
@@ -68,6 +68,52 @@ class DashboardController extends Controller
 
         // Kembali ke dashboard dengan pesan sukses.
         return back()->with('success', 'File draf berhasil diunggah. Menunggu review dari Admin.');
+    }
+
+    /**
+     * Menampilkan file PDF secara aman dengan peringatan jika belum login
+     */
+    public function lihatFile(Surat $surat)
+    {
+        // 1. Cek apakah user BELUM login
+        if (!Auth::check()) {
+            // Generate URL login
+            $loginUrl = route('login');
+            // Kembalikan response berupa script HTML & JS untuk memunculkan Alert
+            return response(
+                "<script>
+                    alert('Peringatan Keamanan!\\nAnda harus login terlebih dahulu untuk dapat mengakses file arsip ini.');
+                    window.location.href = '{$loginUrl}';
+                </script>"
+            );
+        }
+
+        // 2. Cek Keamanan Hak Akses: Pastikan user adalah pemilik surat ATAU admin.
+        if ($surat->user_id != Auth::user()->id_users && Gate::denies('view-admin-menu')) {
+            // Peringatan jika user login tapi mencoba buka surat orang lain
+            return response(
+                "<script>
+                    alert('Akses Ditolak!\\nAnda tidak memiliki hak untuk melihat dokumen ini.');
+                    window.location.href = '".route('dashboard')."';
+                </script>"
+            );
+        }
+
+        // 3. Tentukan lokasi fisik file di dalam server
+        $pathPublic = storage_path('app/public/' . $surat->file_path);
+        $pathPrivate = storage_path('app/' . $surat->file_path);
+
+        $file = null;
+        if (file_exists($pathPrivate)) {
+            $file = $pathPrivate;
+        } elseif (file_exists($pathPublic)) {
+            $file = $pathPublic;
+        } else {
+            abort(404, 'File PDF tidak ditemukan di server.');
+        }
+
+        // 4. Kembalikan file untuk ditampilkan
+        return response()->file($file);
     }
 
     /**

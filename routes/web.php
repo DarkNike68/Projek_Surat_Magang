@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/surat/{surat}/upload', [DashboardController::class, 'uploadFile'])->name('dashboard.surat.upload');
     Route::post('/dashboard/surat/{surat}/upload-final', [DashboardController::class, 'uploadFinalFile'])->name('dashboard.surat.uploadFinal');
     
+    
     // Riwayat Surat
     Route::get('/riwayat-surat', [RiwayatSuratController::class, 'index'])->name('riwayat.index');
 
@@ -48,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// === RUTE KHUSUS AKSES FILE (Pengecekan Keamanan Manual di Controller) ===
+Route::get('/dashboard/surat/{surat}/lihat-file', [DashboardController::class, 'lihatFile'])->name('dashboard.surat.lihatFile');
 
 
 // RUTE KHUSUS UNTUK ADMIN
