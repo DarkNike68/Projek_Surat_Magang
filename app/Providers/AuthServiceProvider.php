@@ -31,6 +31,11 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isBiroUmum();
         });
 
+        // Definisikan Gate KHUSUS untuk Super Admin (Hanya LPTIK)
+        Gate::define('is-super-admin', function (User $user) {
+            return $user->isLptik();
+        });
+
         // Provider untuk login (ini sudah benar, jangan diubah)
         Auth::provider('multi_hash_auth', function ($app, array $config) {
             return new MultiHashUserProvider($app['hash'], $config['model']);

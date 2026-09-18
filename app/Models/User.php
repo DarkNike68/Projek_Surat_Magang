@@ -97,6 +97,29 @@ class User extends Authenticatable
         });
     }
 
+    public function isLptik(): bool
+    {
+        return Cache::remember('is_lptik_' . $this->id_users, 600, function () {
+        
+        // 1. Cari riwayat jabatan terakhir user
+        $riwayatJabatan = HumanStruktural::where('id_pengguna', $this->id_users)
+                                            ->latest('terhitung_mulai')
+                                            ->first();
+        if (!$riwayatJabatan) return false;
+
+        // 2. Cari detail jabatan
+        $jabatan = Jabatan::find($riwayatJabatan->id_jabatan);
+        if (!$jabatan || !$jabatan->id_org) return false;
+        
+        // 3. Cari detail organisasi
+        $organisasi = Organizations::find($jabatan->id_org);
+        if (!$organisasi) return false;
+
+        // 4. Periksa nama organisasi (SESUAIKAN DENGAN DATABASE)
+        return $organisasi->name === 'LPTIK' || $organisasi->name === 'LPTIK (IT)-STAFF'; 
+        });
+    }
+
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);

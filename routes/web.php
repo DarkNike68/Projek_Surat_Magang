@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ArsipController;
 use App\Http\Controllers\Admin\LetterCodeController;
 // Controller dari Proyek Manajemen Dokumen
-
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\PermissionController;
@@ -21,13 +20,14 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
+// ====================================================================
 // RUTE UNTUK SEMUA PENGGUNA YANG SUDAH LOGIN
+// ====================================================================
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/dashboard/surat/{surat}/upload', [DashboardController::class, 'uploadFile'])->name('dashboard.surat.upload');
     Route::post('/dashboard/surat/{surat}/upload-final', [DashboardController::class, 'uploadFinalFile'])->name('dashboard.surat.uploadFinal');
-    
     
     // Riwayat Surat
     Route::get('/riwayat-surat', [RiwayatSuratController::class, 'index'])->name('riwayat.index');
@@ -50,22 +50,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// === RUTE KHUSUS AKSES FILE (Pengecekan Keamanan Manual di Controller) ===
+// ====================================================================
+// RUTE KHUSUS AKSES FILE (Pengecekan Keamanan Manual di Controller)
+// ====================================================================
 Route::get('/dashboard/surat/{surat}/lihat-file', [DashboardController::class, 'lihatFile'])->name('dashboard.surat.lihatFile');
 
-
-// RUTE KHUSUS UNTUK ADMIN
+// ====================================================================
+// GRUP REGULER ADMIN (BAU & LPTIK BISA MENGAKSES)
+// ====================================================================
 Route::middleware(['auth', 'can:view-admin-menu'])->prefix('admin')->name('admin.')->group(function () {
-    // === Rute dari Proyek Surat (Bagian Admin) ===
-    Route::prefix('letter-codes')->name('letter-codes.')->group(function () {
-        Route::get('/jenis-surat', [LetterCodeController::class, 'index'])->name('jenis-surat.index');  
-        Route::get('/jabatan', [LetterCodeController::class, 'index'])->name('jabatan.index');
-        Route::post('/', [LetterCodeController::class, 'store'])->name('store');
-        Route::put('/{letterCode}', [LetterCodeController::class, 'update'])->name('update');
-        Route::delete('/{letterCode}', [LetterCodeController::class, 'destroy'])->name('destroy');
-    });
-    // === Rute dari Proyek Surat (Bagian Admin) ===
-    // Route::post('/surat/{surat}/update', [DashboardController::class, 'adminUpdate'])->name('surat.update');
+    
+    // Rute untuk Verifikasi & Revisi Surat oleh Admin BAU
+    Route::post('/surat/{surat}/update', [DashboardController::class, 'adminUpdate'])->name('surat.update');
+    
+    // === FITUR ARSIP SEMENTARA DINONAKTIFKAN ===
     // Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip.index');
     // Route::post('/arsip', [ArsipController::class, 'store'])->name('arsip.store');
     // Route::delete('/arsip/{type}/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
@@ -73,7 +71,27 @@ Route::middleware(['auth', 'can:view-admin-menu'])->prefix('admin')->name('admin
     // Route::patch('/arsip/{type}/{id}', [ArsipController::class, 'update'])->name('arsip.update');
     // Route::post('/surat/{surat}/unarchive', [ArsipController::class, 'unarchive'])->name('surat.unarchive');
     
-    // === Rute dari Proyek Manajemen Dokumen ===
+    // === Rute API (Khusus Admin Arsip) SEMENTARA DINONAKTIFKAN ===
+    // Route::get('/api/raks', [ArsipController::class, 'getRaks'])->name('api.raks');
+    // Route::get('/api/rak/{rak}/skats', [ArsipController::class, 'getSkatsByRak'])->name('api.skats');
+    // Route::get('/api/skat/{skat}/outners', [ArsipController::class, 'getOutnersBySkat'])->name('api.outners');
+});
+
+// ====================================================================
+// GRUP SUPER ADMIN (HANYA LPTIK YANG BISA MENGAKSES)
+// ====================================================================
+Route::middleware(['auth', 'can:is-super-admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // Konfigurasi Kode Surat & Jabatan
+    Route::prefix('letter-codes')->name('letter-codes.')->group(function () {
+        Route::get('/jenis-surat', [LetterCodeController::class, 'index'])->name('jenis-surat.index');  
+        Route::get('/jabatan', [LetterCodeController::class, 'index'])->name('jabatan.index');
+        Route::post('/', [LetterCodeController::class, 'store'])->name('store');
+        Route::put('/{letterCode}', [LetterCodeController::class, 'update'])->name('update');
+        Route::delete('/{letterCode}', [LetterCodeController::class, 'destroy'])->name('destroy');
+    });
+    
+    // Proyek Manajemen Dokumen & Hak Akses
     Route::resource('categories', CategoryController::class);
     Route::post('/categories/{category}/documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
@@ -87,11 +105,4 @@ Route::middleware(['auth', 'can:view-admin-menu'])->prefix('admin')->name('admin
     Route::get('/permissions/exceptions', [PermissionController::class, 'getExceptions'])->name('permissions.getExceptions');
     
     Route::resource('users', UserController::class);
-
-    // === Rute API (Khusus Admin) ===
-    // Route::get('/api/raks', [ArsipController::class, 'getRaks'])->name('api.raks');
-    // Route::get('/api/rak/{rak}/skats', [ArsipController::class, 'getSkatsByRak'])->name('api.skats');
-    // Route::get('/api/skat/{skat}/outners', [ArsipController::class, 'getOutnersBySkat'])->name('api.outners');
 });
-
-require __DIR__.'/auth.php';
