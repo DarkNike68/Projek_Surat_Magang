@@ -65,13 +65,13 @@ Route::middleware(['auth', 'can:view-admin-menu'])->prefix('admin')->name('admin
         Route::delete('/{letterCode}', [LetterCodeController::class, 'destroy'])->name('destroy');
     });
     // === Rute dari Proyek Surat (Bagian Admin) ===
-    Route::post('/surat/{surat}/update', [DashboardController::class, 'adminUpdate'])->name('surat.update');
-    Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip.index');
-    Route::post('/arsip', [ArsipController::class, 'store'])->name('arsip.store');
-    Route::delete('/arsip/{type}/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
-    Route::post('/surat/{surat}/arsip', [ArsipController::class, 'storeArsip'])->name('surat.arsip');
-    Route::patch('/arsip/{type}/{id}', [ArsipController::class, 'update'])->name('arsip.update');
-    Route::post('/surat/{surat}/unarchive', [ArsipController::class, 'unarchive'])->name('surat.unarchive');
+    // Route::post('/surat/{surat}/update', [DashboardController::class, 'adminUpdate'])->name('surat.update');
+    // Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip.index');
+    // Route::post('/arsip', [ArsipController::class, 'store'])->name('arsip.store');
+    // Route::delete('/arsip/{type}/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
+    // Route::post('/surat/{surat}/arsip', [ArsipController::class, 'storeArsip'])->name('surat.arsip');
+    // Route::patch('/arsip/{type}/{id}', [ArsipController::class, 'update'])->name('arsip.update');
+    // Route::post('/surat/{surat}/unarchive', [ArsipController::class, 'unarchive'])->name('surat.unarchive');
     
     // === Rute dari Proyek Manajemen Dokumen ===
     Route::resource('categories', CategoryController::class);
@@ -89,9 +89,9 @@ Route::middleware(['auth', 'can:view-admin-menu'])->prefix('admin')->name('admin
     Route::resource('users', UserController::class);
 
     // === Rute API (Khusus Admin) ===
-    Route::get('/api/raks', [ArsipController::class, 'getRaks'])->name('api.raks');
-    Route::get('/api/rak/{rak}/skats', [ArsipController::class, 'getSkatsByRak'])->name('api.skats');
-    Route::get('/api/skat/{skat}/outners', [ArsipController::class, 'getOutnersBySkat'])->name('api.outners');
+    // Route::get('/api/raks', [ArsipController::class, 'getRaks'])->name('api.raks');
+    // Route::get('/api/rak/{rak}/skats', [ArsipController::class, 'getSkatsByRak'])->name('api.skats');
+    // Route::get('/api/skat/{skat}/outners', [ArsipController::class, 'getOutnersBySkat'])->name('api.outners');
 });
 
 require __DIR__.'/auth.php';

@@ -51,12 +51,12 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="{{ route('admin.arsip.index') }}" class="nav-link text-white {{ request()->routeIs('admin.arsip.index') ? 'active' : '' }}">
                     <i class="fas fa-archive me-2"></i>
                     Manajemen Arsip
                 </a>
-            </li>
+            </li> -->
             @endcan
             
             <li>

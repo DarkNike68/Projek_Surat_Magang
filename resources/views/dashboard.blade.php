@@ -126,11 +126,11 @@
                                     </button>
                                 @endif
 
-                                @if($surat->status == 'Disahkan')
+                                <!-- @if($surat->status == 'Disahkan')
                                     <button type="button" class="btn btn-xs btn-success" data-bs-toggle="modal" data-bs-target="#arsipModal" data-surat-id="{{ $surat->id }}">
                                         <i class="fas fa-archive me-1"></i> Arsipkan
                                     </button>
-                                @endif
+                                @endif -->
 
                                 @if($surat->status == 'Diarsipkan' && $surat->outner)
                                     <div class="text-muted small text-center mt-2">
